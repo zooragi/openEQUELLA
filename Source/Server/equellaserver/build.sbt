@@ -166,15 +166,15 @@ libraryDependencies ++= Seq(
   "org.apache.lucene"         % "lucene-analyzers" % "3.6.2",
   "org.apache.lucene"         % "lucene-core"      % "3.6.2",
   "org.apache.lucene"         % "lucene-queries"   % "3.6.2",
-  "org.apache.rampart"        % "rampart-core"     % "1.6.3" excludeAll (
+  "org.apache.rampart"        % "rampart-core"     % "1.7.1" excludeAll (
     ExclusionRule(organization = "org.apache.xalan"),
     ExclusionRule(organization = "org.apache.xerces")
   ),
-  "org.apache.rampart" % "rampart-policy" % "1.6.2" excludeAll (
+  "org.apache.rampart" % "rampart-policy" % "1.7.1" excludeAll (
     ExclusionRule(organization = "org.apache.xalan"),
     ExclusionRule(organization = "org.apache.xerces")
   ),
-  "org.apache.rampart" % "rampart-trust" % "1.6.2" excludeAll (
+  "org.apache.rampart" % "rampart-trust" % "1.7.1" excludeAll (
     ExclusionRule(organization = "org.apache.xalan"),
     ExclusionRule(organization = "org.apache.xerces")
   ),
