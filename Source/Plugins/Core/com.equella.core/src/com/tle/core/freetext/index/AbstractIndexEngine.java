@@ -129,9 +129,9 @@ public abstract class AbstractIndexEngine {
     }
     LOGGER.info("Opening writer for index:" + indexPath); // $NON-NLS-1$
     trackingIndexWriter =
-        new TrackingIndexWriter(
-            new IndexWriter(
-                directory, new IndexWriterConfig(LuceneConstants.LATEST_VERSION, getAnalyser())));
+      new TrackingIndexWriter(
+        new IndexWriter(
+          directory, new IndexWriterConfig(LuceneConstants.LATEST_VERSION, getAnalyser())));
     nrtManager = new NRTManager(trackingIndexWriter, null);
 
     // Possibly reopen a searcher every 5 seconds if necessary in the
@@ -139,25 +139,25 @@ public abstract class AbstractIndexEngine {
     nrtReopenThread = new NRTManagerReopenThread(nrtManager, 5.0, 0.1);
     nrtReopenThread.setName("NRT Reopen Thread: " + getClass());
     nrtReopenThread.setPriority(
-        Math.min(Thread.currentThread().getPriority() + 2, Thread.MAX_PRIORITY));
+      Math.min(Thread.currentThread().getPriority() + 2, Thread.MAX_PRIORITY));
     nrtReopenThread.setDaemon(true);
     nrtReopenThread.start();
 
     // Commit any changes to disk every 5 minutes
     commiterThread = new Timer(true);
     commiterThread.schedule(
-        new TimerTask() {
-          @Override
-          public void run() {
-            try {
-              trackingIndexWriter.getIndexWriter().commit();
-            } catch (IOException ex) {
-              LOGGER.error("Error attempting to commit index writer", ex);
-            }
+      new TimerTask() {
+        @Override
+        public void run() {
+          try {
+            trackingIndexWriter.getIndexWriter().commit();
+          } catch (IOException ex) {
+            LOGGER.error("Error attempting to commit index writer", ex);
           }
-        },
-        5 * 60 * 1000,
-        5 * 60 * 1000);
+        }
+      },
+      5 * 60 * 1000,
+      5 * 60 * 1000);
   }
 
   public void modifyIndex(IndexBuilder builder) {
@@ -207,9 +207,9 @@ public abstract class AbstractIndexEngine {
       if (stopWordsFile != null && stopWordsFile.exists()) {
         try {
           stopSet =
-              WordlistLoader.getWordSet(
-                  new FileReader(stopWordsFile),
-                  new CharArraySet(LuceneConstants.LATEST_VERSION, 0, true));
+            WordlistLoader.getWordSet(
+              new FileReader(stopWordsFile),
+              new CharArraySet(LuceneConstants.LATEST_VERSION, 0, true));
         } catch (IOException e1) {
           LOGGER.warn("No stop words available: " + stopWordsFile, e1);
         }
@@ -224,57 +224,57 @@ public abstract class AbstractIndexEngine {
         // Load the only one analyzer from a specific language package provided by Lucene
         String languageAnalyzerPackage = "org.apache.lucene.analysis." + analyzerLanguage;
         try (ScanResult scanResult =
-            new ClassGraph().enableClassInfo().whitelistPackages(languageAnalyzerPackage).scan()) {
+          new ClassGraph().enableClassInfo().whitelistPackages(languageAnalyzerPackage).scan()) {
           ClassInfoList languageAnalyzerClasses =
-              scanResult.getSubclasses(ReusableAnalyzerBase.class.getName());
+            scanResult.getSubclasses(ReusableAnalyzerBase.class.getName());
           List<Class<ReusableAnalyzerBase>> languageAnalyzers =
-              languageAnalyzerClasses.loadClasses(ReusableAnalyzerBase.class);
+            languageAnalyzerClasses.loadClasses(ReusableAnalyzerBase.class);
           Optional<Class<ReusableAnalyzerBase>> languageAnalyzer =
-              languageAnalyzers.stream()
-                  .filter(
-                      languageAnalyzerClass ->
-                          languageAnalyzerClass.getName().contains(languageAnalyzerPackage))
-                  .findFirst();
+            languageAnalyzers.stream()
+              .filter(
+                languageAnalyzerClass ->
+                  languageAnalyzerClass.getName().contains(languageAnalyzerPackage))
+              .findFirst();
 
           if (languageAnalyzer.isPresent()) {
             normalAnalyzer =
-                languageAnalyzer
-                    .get()
-                    .getDeclaredConstructor(Version.class)
-                    .newInstance(Version.LUCENE_36);
+              languageAnalyzer
+                .get()
+                .getDeclaredConstructor(Version.class)
+                .newInstance(Version.LUCENE_36);
             // For the non-stemmed analyzer we still use the TLEAnalyzer, however we use the
             // language specific stop words by loading them from the language specific analyzer.
             Method getDefaultStopSet =
-                languageAnalyzer.get().getDeclaredMethod("getDefaultStopSet");
+              languageAnalyzer.get().getDeclaredMethod("getDefaultStopSet");
             nonStemmedAnalyzer =
-                new TLEAnalyzer(
-                    new CharArraySet(Version.LUCENE_36, (Set) getDefaultStopSet.invoke(null), true),
-                    false);
+              new TLEAnalyzer(
+                new CharArraySet(Version.LUCENE_36, (Set) getDefaultStopSet.invoke(null), true),
+                false);
 
             LOGGER.info("Using Lucene analyzer: " + languageAnalyzer.get().getName());
           }
         } catch (InstantiationException
-            | NoSuchMethodException
-            | InvocationTargetException
-            | IllegalAccessException e) {
+          | NoSuchMethodException
+          | InvocationTargetException
+          | IllegalAccessException e) {
           // For analyzers that don't have constructors or the getDefaultStopSet method
           normalAnalyzer = autoCompleteAnalyzer;
           nonStemmedAnalyzer = autoCompleteAnalyzer;
           LOGGER.warn(
-              analyzerLanguage + " language analyzer is not avaiable so use the default analyzer");
+            analyzerLanguage + " language analyzer is not avaiable so use the default analyzer");
         }
       }
 
       analyzer =
-          new PerFieldAnalyzerWrapper(
-              normalAnalyzer, getAnalyzerFieldMap(autoCompleteAnalyzer, nonStemmedAnalyzer));
+        new PerFieldAnalyzerWrapper(
+          normalAnalyzer, getAnalyzerFieldMap(autoCompleteAnalyzer, nonStemmedAnalyzer));
     }
 
     return analyzer;
   }
 
   protected abstract Map<String, Analyzer> getAnalyzerFieldMap(
-      Analyzer autoComplete, Analyzer nonStemmed);
+    Analyzer autoComplete, Analyzer nonStemmed);
 
   public interface Searcher<T> {
     T search(IndexSearcher searcher) throws IOException;

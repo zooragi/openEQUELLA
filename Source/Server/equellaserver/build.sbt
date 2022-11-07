@@ -53,8 +53,8 @@ libraryDependencies ++= Seq(
   "io.bit3"         % "jsass"       % jsassVersion,
   "com.flickr4java" % "flickr4java" % "2.16" excludeAll (
     ExclusionRule(organization = "org.apache.axis",
-                  name = "axis")
-  ),
+      name = "axis")
+    ),
   "com.google.api-client" % "google-api-client"           % "1.33.2",
   "com.google.apis"       % "google-api-services-books"   % "v1-rev20201021-1.32.1",
   "com.google.apis"       % "google-api-services-youtube" % "v3-rev20220312-1.32.1",
@@ -64,18 +64,18 @@ libraryDependencies ++= Seq(
   "com.google.inject"     % "guice"                       % guiceVersion excludeAll (
     // Due to deduplicates with aopalliance via Spring AOP.
     ExclusionRule(organization = "aopalliance",
-                  name = "aopalliance")
-  ),
+      name = "aopalliance")
+    ),
   "com.google.inject.extensions" % "guice-assistedinject" % guiceVersion excludeAll (
     // Due to deduplicates with aopalliance via Spring AOP.
     ExclusionRule(organization = "aopalliance",
-                  name = "aopalliance")
-  ),
+      name = "aopalliance")
+    ),
   "com.google.inject.extensions" % "guice-spring" % guiceVersion excludeAll (
     // Due to deduplicates with aopalliance via Spring AOP.
     ExclusionRule(organization = "aopalliance",
-                  name = "aopalliance")
-  ),
+      name = "aopalliance")
+    ),
   "com.ibm.icu" % "icu4j" % "70.1",
   sqlServerDep excludeAll (
     // Conflicts with RESTeasy jakarta.xml.bind-api
@@ -188,8 +188,8 @@ libraryDependencies ++= Seq(
   "org.apache.ws.security" % "wss4j"                  % "1.6.19",
   "org.apache.zookeeper"   % "zookeeper"              % "3.7.0" excludeAll (
     ExclusionRule(organization = "org.slf4j",
-                  name = "slf4j-log4j12")
-  ),
+      name = "slf4j-log4j12")
+    ),
   "org.ccil.cowan.tagsoup" % "tagsoup" % "1.2.1",
   // Removed due to deduplication issues with woodstox-core. core-asl has not been updated for years.
   //   com.fasterxml.woodstox/woodstox-core/bundles/woodstox-core-5.0.3.jar:...
@@ -219,14 +219,14 @@ libraryDependencies ++= Seq(
   "org.springframework" % "spring-context"         % springVersion,
   "org.springframework" % "spring-context-support" % springVersion excludeAll (
     ExclusionRule(organization = "jasperreports",
-                  name = "jasperreports")
-  ),
+      name = "jasperreports")
+    ),
   "org.springframework" % "spring-jdbc" % springVersion,
   "org.springframework" % "spring-tx"   % springVersion,
   "org.springframework" % "spring-web"  % springVersion,
-//  "org.springframework" % "spring-webmvc" % "2.5.5" excludeAll (
-//    ExclusionRule(organization = "jasperreports", name = "jasperreports")
-//    ),
+  //  "org.springframework" % "spring-webmvc" % "2.5.5" excludeAll (
+  //    ExclusionRule(organization = "jasperreports", name = "jasperreports")
+  //    ),
   "stax"                      % "stax-api"          % "1.0.1",
   "taglibs"                   % "standard"          % "1.1.2",
   "com.github.equella.legacy" % "qtiworks-jqtiplus" % "1.0-beta3" excludeAll (
@@ -343,14 +343,14 @@ run := {
 
 (assembly / assemblyMergeStrategy) := {
   case PathList("META-INF",
-                "org",
-                "apache",
-                "logging",
-                "log4j",
-                "core",
-                "config",
-                "plugins",
-                "Log4j2Plugins.dat") =>
+  "org",
+  "apache",
+  "logging",
+  "log4j",
+  "core",
+  "config",
+  "plugins",
+  "Log4j2Plugins.dat") =>
     MergeStrategy.last
   case PathList("META-INF", "jdom-info.xml")                => MergeStrategy.first
   case PathList("META-INF", "axiom.xml")                    => MergeStrategy.first
@@ -441,7 +441,7 @@ upgradeZip := {
   val ver         = equellaVersion.value
   val releaseDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"))
   val outZip
-    : File    = target.value / s"tle-upgrade-${ver.major}.${ver.minor}.r${releaseDate} (${ver.semanticVersion}-${ver.releaseType}).zip"
+  : File    = target.value / s"tle-upgrade-${ver.major}.${ver.minor}.r${releaseDate} (${ver.semanticVersion}-${ver.releaseType}).zip"
   val plugVer = ver.fullVersion
   val zipFiles = Seq(
     assembly.value                                         -> "equella-server.jar",
