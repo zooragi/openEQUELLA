@@ -31,6 +31,7 @@ prepareDevConfig := {
 
   mc.setProperty("freetext.index.location", baseDir / "data/freetext")
   mc.setProperty("filestore.root", baseDir / "data/filestore")
+  mc.setProperty("filestore.mme.root", "/")
   mc.setProperty("freetext.stopwords.file", installerConfig / "en-stopWords.txt")
   mc.setProperty("equella.devmode", "true")
   mc.setProperty("plugins.location", pluginRoots.mkString(","))
